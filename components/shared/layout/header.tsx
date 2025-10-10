@@ -56,11 +56,8 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="ghost" asChild>
-            <Link href="/clinics">Find Clinics</Link>
-          </Button>
           <Button asChild>
-            <Link href="/clinic-login">Get Started</Link>
+            <Link href="/clinics">Find Clinics</Link>
           </Button>
         </div>
 
