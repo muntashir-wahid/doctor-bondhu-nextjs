@@ -1,20 +1,24 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { getClinicById } from "@/lib/mock-data"
-import { MapPin, Phone, Mail, Clock, Star, CheckCircle2 } from "lucide-react"
-import Link from "next/link"
-import { notFound } from "next/navigation"
-import { DoctorCard } from "@/components/doctor-card"
+import { Header } from "@/components/shared/layout/header";
+import { Footer } from "@/components/shared/layout/footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { getClinicById } from "@/lib/mock-data";
+import { MapPin, Phone, Mail, Clock, Star, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { DoctorCard } from "@/components/shared/cards/doctor-card";
 
-export default function ClinicDetailsPage({ params }: { params: { id: string } }) {
-  const clinic = getClinicById(params.id)
+export default function ClinicDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const clinic = getClinicById(params.id);
 
   if (!clinic) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -23,18 +27,28 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
       <main>
         {/* Hero Section */}
         <section className="relative h-[400px] w-full overflow-hidden">
-          <img src={clinic.image || "/placeholder.svg"} alt={clinic.name} className="h-full w-full object-cover" />
+          <img
+            src={clinic.image || "/placeholder.svg"}
+            alt={clinic.name}
+            className="h-full w-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0">
             <div className="container mx-auto px-4 pb-8">
-              <Badge className="mb-3 bg-primary text-primary-foreground">{clinic.specialty}</Badge>
-              <h1 className="mb-2 text-balance text-4xl font-bold lg:text-5xl">{clinic.name}</h1>
+              <Badge className="mb-3 bg-primary text-primary-foreground">
+                {clinic.specialty}
+              </Badge>
+              <h1 className="mb-2 text-balance text-4xl font-bold lg:text-5xl">
+                {clinic.name}
+              </h1>
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <Star className="h-5 w-5 fill-primary text-primary" />
                   <span className="text-lg font-semibold">{clinic.rating}</span>
                 </div>
-                <span className="text-muted-foreground">({clinic.reviewCount} reviews)</span>
+                <span className="text-muted-foreground">
+                  ({clinic.reviewCount} reviews)
+                </span>
               </div>
             </div>
           </div>
@@ -48,14 +62,20 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
               <div className="lg:col-span-2">
                 <Card className="mb-6">
                   <CardContent className="p-6">
-                    <h2 className="mb-4 text-2xl font-semibold">About This Clinic</h2>
-                    <p className="leading-relaxed text-muted-foreground">{clinic.description}</p>
+                    <h2 className="mb-4 text-2xl font-semibold">
+                      About This Clinic
+                    </h2>
+                    <p className="leading-relaxed text-muted-foreground">
+                      {clinic.description}
+                    </p>
                   </CardContent>
                 </Card>
 
                 <Card className="mb-6">
                   <CardContent className="p-6">
-                    <h2 className="mb-4 text-2xl font-semibold">Services Offered</h2>
+                    <h2 className="mb-4 text-2xl font-semibold">
+                      Services Offered
+                    </h2>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {clinic.services.map((service, index) => (
                         <div key={index} className="flex items-start gap-2">
@@ -72,7 +92,11 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
                     <h2 className="mb-4 text-2xl font-semibold">Facilities</h2>
                     <div className="flex flex-wrap gap-2">
                       {clinic.facilities.map((facility, index) => (
-                        <Badge key={index} variant="secondary" className="px-3 py-1">
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="px-3 py-1"
+                        >
                           {facility}
                         </Badge>
                       ))}
@@ -82,7 +106,9 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
 
                 {/* Doctors Section */}
                 <div>
-                  <h2 className="mb-6 text-2xl font-semibold">Our Medical Team</h2>
+                  <h2 className="mb-6 text-2xl font-semibold">
+                    Our Medical Team
+                  </h2>
                   <div className="grid gap-6 md:grid-cols-2">
                     {clinic.doctors.map((doctor) => (
                       <DoctorCard key={doctor.id} doctor={doctor} />
@@ -95,14 +121,18 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
               <div className="lg:col-span-1">
                 <Card className="sticky top-20">
                   <CardContent className="p-6">
-                    <h3 className="mb-4 text-xl font-semibold">Contact Information</h3>
+                    <h3 className="mb-4 text-xl font-semibold">
+                      Contact Information
+                    </h3>
 
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">
                         <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
                         <div>
                           <p className="font-medium">Address</p>
-                          <p className="text-sm text-muted-foreground">{clinic.address}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {clinic.address}
+                          </p>
                         </div>
                       </div>
 
@@ -112,7 +142,9 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
                         <Phone className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
                         <div>
                           <p className="font-medium">Phone</p>
-                          <p className="text-sm text-muted-foreground">{clinic.phone}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {clinic.phone}
+                          </p>
                         </div>
                       </div>
 
@@ -122,7 +154,9 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
                         <Mail className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
                         <div>
                           <p className="font-medium">Email</p>
-                          <p className="text-sm text-muted-foreground">{clinic.email}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {clinic.email}
+                          </p>
                         </div>
                       </div>
 
@@ -132,7 +166,9 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
                         <Clock className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
                         <div>
                           <p className="font-medium">Working Hours</p>
-                          <p className="text-sm text-muted-foreground">{clinic.workingHours}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {clinic.workingHours}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -141,9 +177,16 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
 
                     <div className="space-y-3">
                       <Button className="w-full" size="lg" asChild>
-                        <Link href={`/clinic-login?clinic=${clinic.id}`}>Access Clinic Portal</Link>
+                        <Link href={`/clinic-login?clinic=${clinic.id}`}>
+                          Access Clinic Portal
+                        </Link>
                       </Button>
-                      <Button variant="outline" className="w-full bg-transparent" size="lg" asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full bg-transparent"
+                        size="lg"
+                        asChild
+                      >
                         <Link href="/clinics">Back to Clinics</Link>
                       </Button>
                     </div>
@@ -156,5 +199,5 @@ export default function ClinicDetailsPage({ params }: { params: { id: string } }
       </main>
       <Footer />
     </div>
-  )
+  );
 }

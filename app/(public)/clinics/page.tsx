@@ -1,9 +1,9 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { ClinicCard } from "@/components/clinic-card"
-import { mockClinics } from "@/lib/mock-data"
-import { Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { Header } from "@/components/shared/layout/header";
+import { Footer } from "@/components/shared/layout/footer";
+import { ClinicCard } from "@/components/shared/cards/clinic-card";
+import { mockClinics } from "@/lib/mock-data";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function ClinicsPage() {
   return (
@@ -17,7 +17,8 @@ export default function ClinicsPage() {
                 Find Your Perfect Healthcare Provider
               </h1>
               <p className="mb-8 text-pretty text-lg text-muted-foreground">
-                Browse through our network of registered clinics and healthcare facilities
+                Browse through our network of registered clinics and healthcare
+                facilities
               </p>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
@@ -35,7 +36,11 @@ export default function ClinicsPage() {
           <div className="container mx-auto px-4">
             <div className="mb-8 flex items-center justify-between">
               <p className="text-muted-foreground">
-                Showing <span className="font-semibold text-foreground">{mockClinics.length}</span> clinics
+                Showing{" "}
+                <span className="font-semibold text-foreground">
+                  {mockClinics.length}
+                </span>{" "}
+                clinics
               </p>
             </div>
 
@@ -49,5 +54,5 @@ export default function ClinicsPage() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

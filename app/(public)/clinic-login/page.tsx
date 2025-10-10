@@ -1,6 +1,6 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { LoginForm } from "@/components/login-form"
+import { Header } from "@/components/shared/layout/header";
+import { Footer } from "@/components/shared/layout/footer";
+import { LoginForm } from "@/app/(public)/clinic-login/_components/login-form";
 
 export default function ClinicLoginPage() {
   return (
@@ -10,8 +10,12 @@ export default function ClinicLoginPage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-md">
             <div className="mb-8 text-center">
-              <h1 className="mb-2 text-balance text-3xl font-bold lg:text-4xl">Clinic Portal Login</h1>
-              <p className="text-pretty text-muted-foreground">Access your clinic management dashboard</p>
+              <h1 className="mb-2 text-balance text-3xl font-bold lg:text-4xl">
+                Clinic Portal Login
+              </h1>
+              <p className="text-pretty text-muted-foreground">
+                Access your clinic management dashboard
+              </p>
             </div>
             <LoginForm />
           </div>
@@ -19,5 +23,5 @@ export default function ClinicLoginPage() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

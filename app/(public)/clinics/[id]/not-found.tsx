@@ -1,7 +1,7 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { Header } from "@/components/shared/layout/header";
+import { Footer } from "@/components/shared/layout/footer";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -18,5 +18,5 @@ export default function NotFound() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }
