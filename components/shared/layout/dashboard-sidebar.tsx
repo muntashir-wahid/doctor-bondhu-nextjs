@@ -110,13 +110,13 @@ export function DashboardSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant="inset" collapsible="icon">
+    <Sidebar variant="inset" collapsible="icon" className="overflow-hidden">
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+        <div className="flex items-center gap-2 px-2 py-2 min-w-0">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shrink-0">
             <Stethoscope className="h-4 w-4" />
           </div>
-          <div className="grid flex-1 text-left text-sm leading-tight">
+          <div className="grid flex-1 text-left text-sm leading-tight min-w-0 group-data-[collapsible=icon]:hidden">
             <span className="truncate font-semibold">DoctorBondhu</span>
             <span className="truncate text-xs text-muted-foreground">
               Healthcare Management
@@ -125,10 +125,10 @@ export function DashboardSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="scrollbar-hide overflow-y-auto">
         {/* Main Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel>Main Navigation</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Main Navigation</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {navigationItems.map((item) => (
@@ -137,10 +137,14 @@ export function DashboardSidebar() {
                     asChild
                     isActive={pathname === item.href}
                     tooltip={item.title}
+                    className="w-full overflow-hidden"
                   >
-                    <Link href={item.href}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-2 min-w-0"
+                    >
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -149,10 +153,10 @@ export function DashboardSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator />
+        {/* <SidebarSeparator /> */}
 
         {/* Analytics & Reports */}
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Analytics & Reports</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -162,22 +166,26 @@ export function DashboardSidebar() {
                     asChild
                     isActive={pathname === item.href}
                     tooltip={item.title}
+                    className="w-full overflow-hidden"
                   >
-                    <Link href={item.href}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-2 min-w-0"
+                    >
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
 
-        <SidebarSeparator />
+        {/* <SidebarSeparator /> */}
 
         {/* Communication */}
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Communication</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -187,22 +195,26 @@ export function DashboardSidebar() {
                     asChild
                     isActive={pathname === item.href}
                     tooltip={item.title}
+                    className="w-full overflow-hidden"
                   >
-                    <Link href={item.href}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-2 min-w-0"
+                    >
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
 
-        <SidebarSeparator />
+        {/* <SidebarSeparator /> */}
 
         {/* Management */}
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Management</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -212,30 +224,34 @@ export function DashboardSidebar() {
                     asChild
                     isActive={pathname === item.href}
                     tooltip={item.title}
+                    className="w-full overflow-hidden"
                   >
-                    <Link href={item.href}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-2 min-w-0"
+                    >
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="border-t">
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex items-center gap-2 px-2 py-2">
-              <Avatar className="h-8 w-8">
+            <div className="flex items-center gap-2 px-2 py-2 min-w-0">
+              <Avatar className="h-8 w-8 shrink-0">
                 <AvatarImage src="/avatars/user.jpg" alt="User" />
                 <AvatarFallback className="bg-primary text-primary-foreground">
                   <User className="h-4 w-4" />
                 </AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid flex-1 text-left text-sm leading-tight min-w-0 group-data-[collapsible=icon]:hidden">
                 <span className="truncate font-semibold">Dr. Admin</span>
                 <span className="truncate text-xs text-muted-foreground">
                   admin@doctorbondhu.com
@@ -244,7 +260,7 @@ export function DashboardSidebar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 shrink-0 cursor-pointer"
                 title="Sign Out"
               >
                 <LogOut className="h-4 w-4" />

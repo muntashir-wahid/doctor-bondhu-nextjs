@@ -1,6 +1,4 @@
-import React from "react";
-
-const PrivatePage = () => {
+const DashboardPage = () => {
   return (
     <div className="text-center">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">Hello World!</h1>
@@ -11,4 +9,4 @@ const PrivatePage = () => {
   );
 };
 
-export default PrivatePage;
+export default DashboardPage;
