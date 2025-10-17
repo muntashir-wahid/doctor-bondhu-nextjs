@@ -1,21 +1,21 @@
-import { Header } from "@/components/shared/layout/header";
-import { Footer } from "@/components/shared/layout/footer";
+import Link from "next/link";
+import { MapPin, Phone, Mail, Clock, Star, CheckCircle2 } from "lucide-react";
+import { notFound } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getClinicById } from "@/lib/mock-data";
-import { MapPin, Phone, Mail, Clock, Star, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { DoctorCard } from "@/components/shared/cards/doctor-card";
 
-export default function ClinicDetailsPage({
+export default async function ClinicDetailsPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const clinic = getClinicById(params.id);
+  const { id } = await params;
+  const clinic = getClinicById(id);
 
   if (!clinic) {
     notFound();
@@ -176,7 +176,7 @@ export default function ClinicDetailsPage({
 
                     <div className="space-y-3">
                       <Button className="w-full" size="lg" asChild>
-                        <Link href={`/clinic-login?clinic=${clinic.id}`}>
+                        <Link href={`/clinics/${clinic.id}/login`}>
                           Access Clinic Portal
                         </Link>
                       </Button>

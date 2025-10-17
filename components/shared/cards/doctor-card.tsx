@@ -1,10 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Clock, GraduationCap, Briefcase } from "lucide-react"
-import type { Doctor } from "@/lib/mock-data"
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Clock, GraduationCap, Briefcase } from "lucide-react";
+import type { Doctor } from "@/lib/mock-data";
 
 interface DoctorCardProps {
-  doctor: Doctor
+  doctor: Doctor;
 }
 
 export function DoctorCard({ doctor }: DoctorCardProps) {
@@ -30,19 +30,27 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
           {/* Content section */}
           <div className="flex flex-1 flex-col justify-between p-6">
             <div>
-              <h3 className="mb-2 text-xl font-bold text-foreground">{doctor.name}</h3>
-              <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{doctor.bio}</p>
+              <h3 className="mb-2 text-xl font-bold text-foreground">
+                {doctor.name}
+              </h3>
+              <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                {doctor.bio}
+              </p>
             </div>
 
             {/* Info grid with colored icons */}
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="flex flex-wrap gap-4">
               <div className="flex items-start gap-3">
                 <div className="rounded-lg bg-accent/10 p-2">
                   <GraduationCap className="h-4 w-4 text-accent" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-muted-foreground">Qualification</p>
-                  <p className="text-sm font-semibold text-foreground">{doctor.qualification}</p>
+                  <p className="text-xs font-medium text-muted-foreground">
+                    Qualification
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {doctor.qualification}
+                  </p>
                 </div>
               </div>
 
@@ -51,8 +59,12 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
                   <Briefcase className="h-4 w-4 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-muted-foreground">Experience</p>
-                  <p className="text-sm font-semibold text-foreground">{doctor.experience}</p>
+                  <p className="text-xs font-medium text-muted-foreground">
+                    Experience
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {doctor.experience}
+                  </p>
                 </div>
               </div>
 
@@ -61,8 +73,12 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
                   <Clock className="h-4 w-4 text-secondary" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs font-medium text-muted-foreground">Availability</p>
-                  <p className="text-sm font-semibold text-foreground">{doctor.availability}</p>
+                  <p className="text-xs font-medium text-muted-foreground">
+                    Availability
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {doctor.availability}
+                  </p>
                 </div>
               </div>
             </div>
@@ -70,5 +86,5 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

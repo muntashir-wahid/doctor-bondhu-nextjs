@@ -1,8 +1,9 @@
-import { Header } from "@/components/shared/layout/header";
-import { Footer } from "@/components/shared/layout/footer";
-import { LoginForm } from "@/app/(public)/clinic-login/_components/login-form";
+import { LoginForm } from "./_components/login-form";
 
-export default function ClinicLoginPage() {
+const ClinicLogin = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+  console.log("Clinic ID:", id);
+
   return (
     <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 py-12">
       <div className="container mx-auto px-4">
@@ -20,4 +21,6 @@ export default function ClinicLoginPage() {
       </div>
     </main>
   );
-}
+};
+
+export default ClinicLogin;
