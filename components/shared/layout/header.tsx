@@ -42,13 +42,13 @@ export function Header() {
             Clinics
           </Link>
           <Link
-            href="#features"
+            href="/#features"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Features
           </Link>
           <Link
-            href="#pricing"
+            href="/#pricing"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Pricing
