@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 export default function ClinicsPage() {
   return (
     <div className="min-h-screen">
-      <Header />
       <main>
         <section className="bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 py-16">
           <div className="container mx-auto px-4">
@@ -52,7 +51,6 @@ export default function ClinicsPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

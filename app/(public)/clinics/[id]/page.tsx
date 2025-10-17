@@ -23,7 +23,6 @@ export default function ClinicDetailsPage({
 
   return (
     <div className="min-h-screen">
-      <Header />
       <main>
         {/* Hero Section */}
         <section className="relative h-[400px] w-full overflow-hidden">
@@ -197,7 +196,6 @@ export default function ClinicDetailsPage({
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }
