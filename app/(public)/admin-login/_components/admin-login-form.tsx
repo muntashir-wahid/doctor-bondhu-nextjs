@@ -1,13 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,10 +9,8 @@ import { Mail, Lock, Loader2 } from "lucide-react";
 
 const AdminLoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState("");
 
   const handleEmailPasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,34 +19,10 @@ const AdminLoginForm = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     console.log("[v0] Email/Password login attempted:", { email, password });
     setIsLoading(false);
-    // In a real app, this would redirect to the dashboard
-  };
-
-  const handleSendOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // Simulate sending OTP
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("[v0] OTP sent to:", email);
-    setOtpSent(true);
-    setIsLoading(false);
-  };
-
-  const handleOTPLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // Simulate OTP verification
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("[v0] OTP login attempted:", { email, otp });
-    setIsLoading(false);
-    // In a real app, this would redirect to the dashboard
   };
 
   return (
     <Card className="border-2 shadow-xl">
-      <CardHeader>
-        <CardTitle>Welcome Back</CardTitle>
-      </CardHeader>
       <CardContent>
         <form onSubmit={handleEmailPasswordLogin} className="space-y-4">
           <div className="space-y-2">
