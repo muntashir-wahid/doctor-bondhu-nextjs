@@ -4,17 +4,12 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  BarChart3,
   Calendar,
   FileText,
   Home,
-  Settings,
   Stethoscope,
   Users,
-  UserCheck,
   Building2,
-  MessageSquare,
-  Bell,
   LogOut,
   User,
 } from "lucide-react";
@@ -24,15 +19,97 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+
+const NAVIGATION_ITEMS = {
+  SUPER_ADMIN: [
+    {
+      title: "Dashboard",
+      icon: Home,
+      href: "/admin/dashboard",
+    },
+    {
+      title: "Clinics",
+      icon: Building2,
+      href: "/admin/clinics",
+    },
+  ],
+
+  CLINIC_ADMIN: [
+    {
+      title: "Dashboard",
+      icon: Home,
+      href: "/dashboard",
+    },
+    {
+      title: "Doctors",
+      icon: Stethoscope,
+      href: "/doctors",
+    },
+    {
+      title: "Patients",
+      icon: Users,
+      href: "/patients",
+    },
+    {
+      title: "Appointments",
+      icon: Calendar,
+      href: "/appointments",
+    },
+    {
+      title: "Staffs",
+      icon: Users,
+      href: "/staffs",
+    },
+  ],
+
+  CLINIC_DOCTOR: [
+    {
+      title: "Dashboard",
+      icon: Home,
+      href: "/dashboard",
+    },
+    {
+      title: "Patients",
+      icon: Users,
+      href: "/patients",
+    },
+    {
+      title: "Appointments",
+      icon: Calendar,
+      href: "/appointments",
+    },
+    {
+      title: "Medical Records",
+      icon: FileText,
+      href: "/medical-records",
+    },
+  ],
+
+  CLINIC_RECEPTIONIST: [
+    {
+      title: "Dashboard",
+      icon: Home,
+      href: "/dashboard",
+    },
+    {
+      title: "Patients",
+      icon: Users,
+      href: "/patients",
+    },
+    {
+      title: "Appointments",
+      icon: Calendar,
+      href: "/appointments",
+    },
+  ],
+};
 
 const navigationItems = [
   {
@@ -67,46 +144,11 @@ const navigationItems = [
   },
 ];
 
-const analyticsItems = [
-  {
-    title: "Analytics",
-    icon: BarChart3,
-    href: "/analytics",
-  },
-  {
-    title: "Reports",
-    icon: FileText,
-    href: "/reports",
-  },
-];
-
-const communicationItems = [
-  {
-    title: "Messages",
-    icon: MessageSquare,
-    href: "/messages",
-  },
-  {
-    title: "Notifications",
-    icon: Bell,
-    href: "/notifications",
-  },
-];
-
-const managementItems = [
-  {
-    title: "Staff Management",
-    icon: UserCheck,
-    href: "/staff",
-  },
-  {
-    title: "Settings",
-    icon: Settings,
-    href: "/settings",
-  },
-];
-
-export function DashboardSidebar() {
+export function DashboardSidebar({
+  role,
+}: {
+  role: keyof typeof NAVIGATION_ITEMS;
+}) {
   const pathname = usePathname();
 
   return (
@@ -131,7 +173,7 @@ export function DashboardSidebar() {
           {/* <SidebarGroupLabel>Main Navigation</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigationItems.map((item) => (
+              {NAVIGATION_ITEMS[role].map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
@@ -152,93 +194,6 @@ export function DashboardSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        {/* <SidebarSeparator /> */}
-
-        {/* Analytics & Reports */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel>Analytics & Reports</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {analyticsItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                    tooltip={item.title}
-                    className="w-full overflow-hidden"
-                  >
-                    <Link
-                      href={item.href}
-                      className="flex items-center gap-2 min-w-0"
-                    >
-                      <item.icon className="h-4 w-4 shrink-0" />
-                      <span className="truncate">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
-
-        {/* <SidebarSeparator /> */}
-
-        {/* Communication */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel>Communication</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {communicationItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                    tooltip={item.title}
-                    className="w-full overflow-hidden"
-                  >
-                    <Link
-                      href={item.href}
-                      className="flex items-center gap-2 min-w-0"
-                    >
-                      <item.icon className="h-4 w-4 shrink-0" />
-                      <span className="truncate">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
-
-        {/* <SidebarSeparator /> */}
-
-        {/* Management */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel>Management</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {managementItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                    tooltip={item.title}
-                    className="w-full overflow-hidden"
-                  >
-                    <Link
-                      href={item.href}
-                      className="flex items-center gap-2 min-w-0"
-                    >
-                      <item.icon className="h-4 w-4 shrink-0" />
-                      <span className="truncate">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
       </SidebarContent>
 
       <SidebarFooter className="border-t">
