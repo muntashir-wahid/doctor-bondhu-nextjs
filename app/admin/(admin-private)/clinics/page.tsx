@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { mockClinics } from "@/lib/mock-data";
+import Link from "next/link";
 
 const AdminClinicsPage = () => {
   return (
@@ -39,9 +40,14 @@ const AdminClinicsPage = () => {
                 Manage and monitor all registered clinics in the system
               </p>
             </div>
-            <Button className="bg-gradient-to-r from-primary to-secondary shadow-md hover:shadow-lg">
-              <Plus className="mr-2 h-4 w-4" />
-              Add New Clinic
+            <Button
+              className="bg-gradient-to-r from-primary to-secondary shadow-md hover:shadow-lg"
+              asChild
+            >
+              <Link href="/admin/clinics/add-new">
+                <Plus className="mr-2 h-4 w-4" />
+                Add New Clinic
+              </Link>
             </Button>
           </div>
         </div>
