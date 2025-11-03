@@ -1,5 +1,3 @@
-import { Header } from "@/components/shared/layout/header";
-import { Footer } from "@/components/shared/layout/footer";
 import { ClinicCard } from "@/components/shared/cards/clinic-card";
 import { mockClinics } from "@/lib/mock-data";
 import { Search } from "lucide-react";
