@@ -1,5 +1,7 @@
+import PrescriptionsList from "@/modules/prescriptions/components/prescriptions-list";
+
 const PatientPrescriptionsPage = () => {
-  return <div>Patient Prescriptions Page</div>;
+  return <PrescriptionsList />;
 };
 
 export default PatientPrescriptionsPage;
