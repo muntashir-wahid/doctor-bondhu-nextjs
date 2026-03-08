@@ -1,30 +1,30 @@
 export interface Clinic {
-  id: string
-  name: string
-  specialty: string
-  location: string
-  address: string
-  phone: string
-  email: string
-  rating: number
-  reviewCount: number
-  image: string
-  description: string
-  workingHours: string
-  services: string[]
-  facilities: string[]
-  doctors: Doctor[]
+  id: string;
+  name: string;
+  specialty: string;
+  location: string;
+  address: string;
+  phone: string;
+  email: string;
+  rating: number;
+  reviewCount: number;
+  image: string;
+  description: string;
+  workingHours: string;
+  services: string[];
+  facilities: string[];
+  doctors: Doctor[];
 }
 
 export interface Doctor {
-  id: string
-  name: string
-  specialty: string
-  qualification: string
-  experience: string
-  image: string
-  availability: string
-  bio: string
+  id: string;
+  name: string;
+  specialty: string;
+  qualification: string;
+  experience: string;
+  image: string;
+  availability: string;
+  bio: string;
 }
 
 export const mockClinics: Clinic[] = [
@@ -42,8 +42,20 @@ export const mockClinics: Clinic[] = [
     description:
       "A comprehensive healthcare facility offering world-class medical services with state-of-the-art technology and experienced medical professionals.",
     workingHours: "Mon-Fri: 8:00 AM - 8:00 PM, Sat: 9:00 AM - 5:00 PM",
-    services: ["General Medicine", "Cardiology", "Pediatrics", "Orthopedics", "Dermatology"],
-    facilities: ["24/7 Emergency", "Pharmacy", "Laboratory", "Radiology", "ICU"],
+    services: [
+      "General Medicine",
+      "Cardiology",
+      "Pediatrics",
+      "Orthopedics",
+      "Dermatology",
+    ],
+    facilities: [
+      "24/7 Emergency",
+      "Pharmacy",
+      "Laboratory",
+      "Radiology",
+      "ICU",
+    ],
     doctors: [
       {
         id: "d1",
@@ -81,8 +93,19 @@ export const mockClinics: Clinic[] = [
     description:
       "Your trusted family healthcare partner providing personalized care for all ages in a warm and welcoming environment.",
     workingHours: "Mon-Sat: 7:00 AM - 7:00 PM, Sun: Closed",
-    services: ["Family Medicine", "Preventive Care", "Chronic Disease Management", "Vaccinations", "Health Screenings"],
-    facilities: ["On-site Lab", "Digital X-Ray", "Telemedicine", "Patient Portal"],
+    services: [
+      "Family Medicine",
+      "Preventive Care",
+      "Chronic Disease Management",
+      "Vaccinations",
+      "Health Screenings",
+    ],
+    facilities: [
+      "On-site Lab",
+      "Digital X-Ray",
+      "Telemedicine",
+      "Patient Portal",
+    ],
     doctors: [
       {
         id: "d3",
@@ -120,8 +143,19 @@ export const mockClinics: Clinic[] = [
     description:
       "Modern dental practice offering comprehensive oral health services with the latest technology and gentle care approach.",
     workingHours: "Mon-Thu: 8:00 AM - 6:00 PM, Fri: 8:00 AM - 4:00 PM",
-    services: ["General Dentistry", "Cosmetic Dentistry", "Orthodontics", "Oral Surgery", "Teeth Whitening"],
-    facilities: ["Digital Imaging", "Sedation Dentistry", "Same-Day Crowns", "Emergency Care"],
+    services: [
+      "General Dentistry",
+      "Cosmetic Dentistry",
+      "Orthodontics",
+      "Oral Surgery",
+      "Teeth Whitening",
+    ],
+    facilities: [
+      "Digital Imaging",
+      "Sedation Dentistry",
+      "Same-Day Crowns",
+      "Emergency Care",
+    ],
     doctors: [
       {
         id: "d5",
@@ -159,8 +193,19 @@ export const mockClinics: Clinic[] = [
     description:
       "Leading eye care center providing comprehensive vision services from routine exams to advanced surgical procedures.",
     workingHours: "Mon-Fri: 8:00 AM - 6:00 PM, Sat: 9:00 AM - 2:00 PM",
-    services: ["Eye Exams", "LASIK Surgery", "Cataract Surgery", "Glaucoma Treatment", "Contact Lenses"],
-    facilities: ["Advanced Diagnostics", "Surgical Suite", "Optical Shop", "Low Vision Clinic"],
+    services: [
+      "Eye Exams",
+      "LASIK Surgery",
+      "Cataract Surgery",
+      "Glaucoma Treatment",
+      "Contact Lenses",
+    ],
+    facilities: [
+      "Advanced Diagnostics",
+      "Surgical Suite",
+      "Optical Shop",
+      "Low Vision Clinic",
+    ],
     doctors: [
       {
         id: "d7",
@@ -185,10 +230,22 @@ export const mockClinics: Clinic[] = [
     rating: 4.8,
     reviewCount: 389,
     image: "/doctor-using-tablet-with-patient-smiling.jpg",
-    description: "Dedicated to providing compassionate, comprehensive healthcare for women at every stage of life.",
+    description:
+      "Dedicated to providing compassionate, comprehensive healthcare for women at every stage of life.",
     workingHours: "Mon-Fri: 8:00 AM - 7:00 PM, Sat: 9:00 AM - 3:00 PM",
-    services: ["OB/GYN", "Prenatal Care", "Mammography", "Fertility Services", "Menopause Management"],
-    facilities: ["Ultrasound", "Mammography Suite", "Private Consultation Rooms", "Lactation Support"],
+    services: [
+      "OB/GYN",
+      "Prenatal Care",
+      "Mammography",
+      "Fertility Services",
+      "Menopause Management",
+    ],
+    facilities: [
+      "Ultrasound",
+      "Mammography Suite",
+      "Private Consultation Rooms",
+      "Lactation Support",
+    ],
     doctors: [
       {
         id: "d8",
@@ -213,7 +270,8 @@ export const mockClinics: Clinic[] = [
     rating: 4.7,
     reviewCount: 267,
     image: "/healthcare-analytics-dashboard-on-computer-screen.jpg",
-    description: "Specialized care for athletes and active individuals, helping you recover faster and perform better.",
+    description:
+      "Specialized care for athletes and active individuals, helping you recover faster and perform better.",
     workingHours: "Mon-Sat: 7:00 AM - 8:00 PM, Sun: 9:00 AM - 5:00 PM",
     services: [
       "Sports Injury Treatment",
@@ -222,7 +280,12 @@ export const mockClinics: Clinic[] = [
       "Concussion Management",
       "Joint Injections",
     ],
-    facilities: ["Rehabilitation Gym", "Hydrotherapy Pool", "Biomechanics Lab", "Recovery Suite"],
+    facilities: [
+      "Rehabilitation Gym",
+      "Hydrotherapy Pool",
+      "Biomechanics Lab",
+      "Recovery Suite",
+    ],
     doctors: [
       {
         id: "d9",
@@ -236,8 +299,8 @@ export const mockClinics: Clinic[] = [
       },
     ],
   },
-]
+];
 
 export function getClinicById(id: string): Clinic | undefined {
-  return mockClinics.find((clinic) => clinic.id === id)
+  return mockClinics.find((clinic) => clinic.id === id);
 }

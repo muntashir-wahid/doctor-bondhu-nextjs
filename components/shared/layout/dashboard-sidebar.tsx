@@ -3,16 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Calendar,
-  FileText,
-  Home,
-  Stethoscope,
-  Users,
-  Building2,
-  LogOut,
-  User,
-} from "lucide-react";
+import { Stethoscope, LogOut, User } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -26,130 +17,32 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import DASHBOARD_ITEMS, { type DashboardItem } from "./dashboard-items";
 
-const NAVIGATION_ITEMS = {
-  SUPER_ADMIN: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/admin/dashboard",
-    },
-    {
-      title: "Clinics",
-      icon: Building2,
-      href: "/admin/clinics",
-    },
-  ],
+type SystemRoles = "SUPER_ADMIN";
+type ClinicRoles = "OWNER" | "ADMIN" | "DOCTOR" | "RECEPTIONIST";
+type UserRoles = "PATIENT";
 
-  CLINIC_ADMIN: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/dashboard",
-    },
-    {
-      title: "Doctors",
-      icon: Stethoscope,
-      href: "/doctors",
-    },
-    {
-      title: "Patients",
-      icon: Users,
-      href: "/patients",
-    },
-    {
-      title: "Appointments",
-      icon: Calendar,
-      href: "/appointments",
-    },
-    {
-      title: "Staffs",
-      icon: Users,
-      href: "/staffs",
-    },
-  ],
-
-  CLINIC_DOCTOR: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/dashboard",
-    },
-    {
-      title: "Patients",
-      icon: Users,
-      href: "/patients",
-    },
-    {
-      title: "Appointments",
-      icon: Calendar,
-      href: "/appointments",
-    },
-    {
-      title: "Medical Records",
-      icon: FileText,
-      href: "/medical-records",
-    },
-  ],
-
-  CLINIC_RECEPTIONIST: [
-    {
-      title: "Dashboard",
-      icon: Home,
-      href: "/dashboard",
-    },
-    {
-      title: "Patients",
-      icon: Users,
-      href: "/patients",
-    },
-    {
-      title: "Appointments",
-      icon: Calendar,
-      href: "/appointments",
-    },
-  ],
-};
-
-const navigationItems = [
-  {
-    title: "Dashboard",
-    icon: Home,
-    href: "/dashboard",
-  },
-  {
-    title: "Patients",
-    icon: Users,
-    href: "/patients",
-  },
-  {
-    title: "Appointments",
-    icon: Calendar,
-    href: "/appointments",
-  },
-  {
-    title: "Doctors",
-    icon: Stethoscope,
-    href: "/doctors",
-  },
-  {
-    title: "Clinics",
-    icon: Building2,
-    href: "/clinics",
-  },
-  {
-    title: "Medical Records",
-    icon: FileText,
-    href: "/medical-records",
-  },
-];
+type DashboardSidebarProps =
+  | { organization: "SYSTEM"; role: SystemRoles }
+  | { organization: "CLINIC"; role: ClinicRoles }
+  | { organization: "USER"; role: UserRoles };
 
 export function DashboardSidebar({
   role,
-}: {
-  role: keyof typeof NAVIGATION_ITEMS;
-}) {
+  organization,
+}: DashboardSidebarProps) {
   const pathname = usePathname();
+
+  const getDashboardItems = (): DashboardItem[] => {
+    const orgItems = DASHBOARD_ITEMS[organization];
+    if (orgItems && role in orgItems) {
+      return (orgItems as any)[role] || [];
+    }
+    return [];
+  };
+
+  const items = getDashboardItems();
 
   return (
     <Sidebar variant="inset" collapsible="icon" className="overflow-hidden">
@@ -170,10 +63,9 @@ export function DashboardSidebar({
       <SidebarContent className="scrollbar-hide overflow-y-auto">
         {/* Main Navigation */}
         <SidebarGroup>
-          {/* <SidebarGroupLabel>Main Navigation</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
-              {NAVIGATION_ITEMS[role].map((item) => (
+              {items.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
