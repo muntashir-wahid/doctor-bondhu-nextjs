@@ -148,7 +148,7 @@ const AdminCreateClinicPage = () => {
   const handleWorkingHoursChange = (
     day: string,
     field: string,
-    value: string | boolean
+    value: string | boolean,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -234,7 +234,7 @@ const AdminCreateClinicPage = () => {
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/admin/clinics" className="flex items-center gap-2">
+              <Link href="/adminum/clinics" className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 Back to Clinics
               </Link>
@@ -603,7 +603,7 @@ const AdminCreateClinicPage = () => {
                                 handleWorkingHoursChange(
                                   day,
                                   "open",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                               disabled={hours.closed}
@@ -617,7 +617,7 @@ const AdminCreateClinicPage = () => {
                                 handleWorkingHoursChange(
                                   day,
                                   "close",
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                               disabled={hours.closed}
@@ -630,7 +630,7 @@ const AdminCreateClinicPage = () => {
                                 handleWorkingHoursChange(
                                   day,
                                   "closed",
-                                  !hours.closed
+                                  !hours.closed,
                                 )
                               }
                             >
@@ -638,7 +638,7 @@ const AdminCreateClinicPage = () => {
                             </Button>
                           </div>
                         </div>
-                      )
+                      ),
                     )}
                   </div>
                 </div>

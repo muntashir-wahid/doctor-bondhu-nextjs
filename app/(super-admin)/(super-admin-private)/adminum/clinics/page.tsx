@@ -44,7 +44,7 @@ const AdminClinicsPage = () => {
               className="bg-gradient-to-r from-primary to-secondary shadow-md hover:shadow-lg"
               asChild
             >
-              <Link href="/admin/clinics/add-new">
+              <Link href="/adminum/clinics/add-new">
                 <Plus className="mr-2 h-4 w-4" />
                 Add New Clinic
               </Link>
@@ -91,7 +91,7 @@ const AdminClinicsPage = () => {
                   <p className="text-2xl font-bold">
                     {mockClinics.reduce(
                       (total, clinic) => total + clinic.doctors.length,
-                      0
+                      0,
                     )}
                   </p>
                   <p className="text-sm text-muted-foreground">Total Doctors</p>
