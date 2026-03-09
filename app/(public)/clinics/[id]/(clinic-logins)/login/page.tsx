@@ -1,6 +1,10 @@
 import { LoginForm } from "./_components/login-form";
 
-const ClinicLogin = async ({ params }: { params: Promise<{ id: string }> }) => {
+const ClinicPatientLoginPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = await params;
   console.log("Clinic ID:", id);
 
@@ -23,4 +27,4 @@ const ClinicLogin = async ({ params }: { params: Promise<{ id: string }> }) => {
   );
 };
 
-export default ClinicLogin;
+export default ClinicPatientLoginPage;
