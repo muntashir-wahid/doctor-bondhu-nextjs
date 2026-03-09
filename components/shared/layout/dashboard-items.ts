@@ -20,12 +20,12 @@ const DASHBOARD_ITEMS = {
       {
         title: "Dashboard",
         icon: Home,
-        href: "/admenium",
+        href: "/adminum",
       },
       {
         title: "Clinics",
         icon: Building2,
-        href: "/admenium/clinics",
+        href: "/adminum/clinics",
       },
     ],
   },

@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, Loader2, AlertCircle } from "lucide-react";
-import api from "@/lib/axios";
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -40,43 +39,17 @@ const AdminLoginForm = () => {
     initialValues,
     validationSchema,
     onSubmit: async (values: LoginFormValues) => {
+      setApiError("");
       try {
-        setApiError("");
-
-        const response = await api.post("/auth/login", values);
-
-        if (response.data.success) {
-          const { accessToken, refreshToken, user } = response.data.data;
-
-          // Store tokens
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
-          localStorage.setItem("user", JSON.stringify(user));
-
-          // Redirect to admin dashboard
-          router.push("/admin/dashboard");
-        } else {
-          setApiError(response.data.message || "Login failed");
-        }
-      } catch (error: any) {
-        console.error("Login error:", error);
-
-        if (error.response?.status === 401) {
-          setApiError("Invalid email or password");
-        } else if (error.response?.status === 422) {
-          // Handle validation errors from backend
-          const errors = error.response.data.errors;
-          if (errors?.email) {
-            formik.setFieldError("email", errors.email[0]);
-          }
-          if (errors?.password) {
-            formik.setFieldError("password", errors.password[0]);
-          }
-        } else if (error.response?.data?.message) {
-          setApiError(error.response.data.message);
-        } else {
-          setApiError("Something went wrong. Please try again.");
-        }
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        console.log("[v0] Super admin login attempted:", values);
+        // In a real app, you would handle authentication here and redirect on success
+        router.push("/adminum");
+      } catch (error) {
+        setApiError(
+          "Login failed. Please check your credentials and try again.",
+        );
       }
     },
   });
