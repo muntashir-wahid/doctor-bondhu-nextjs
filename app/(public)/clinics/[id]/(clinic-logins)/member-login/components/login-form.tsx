@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Mail, Lock, Loader2, UserCog } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type Role = "OWNER" | "ADMIN" | "DOCTOR";
 
@@ -29,6 +30,7 @@ export function ClinicMemberLoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<Role | "">("");
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +40,7 @@ export function ClinicMemberLoginForm() {
     console.log("[v0] Member login attempted:", { email, password, role });
     setIsLoading(false);
     // In a real app, this would redirect to the appropriate dashboard based on role
+    router.push("/clinic");
   };
 
   return (

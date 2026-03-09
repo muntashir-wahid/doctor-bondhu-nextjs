@@ -1,51 +1,61 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Mail, Lock, KeyRound, Loader2 } from "lucide-react"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Mail, Lock, KeyRound, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [otpSent, setOtpSent] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [otp, setOtp] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const router = useRouter();
 
   const handleEmailPasswordLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    console.log("[v0] Email/Password login attempted:", { email, password })
-    setIsLoading(false)
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("[v0] Email/Password login attempted:", { email, password });
+    setIsLoading(false);
     // In a real app, this would redirect to the dashboard
-  }
+    router.push("/patient");
+  };
 
   const handleSendOTP = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
     // Simulate sending OTP
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    console.log("[v0] OTP sent to:", email)
-    setOtpSent(true)
-    setIsLoading(false)
-  }
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("[v0] OTP sent to:", email);
+    setOtpSent(true);
+    setIsLoading(false);
+  };
 
   const handleOTPLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
     // Simulate OTP verification
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    console.log("[v0] OTP login attempted:", { email, otp })
-    setIsLoading(false)
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("[v0] OTP login attempted:", { email, otp });
+    setIsLoading(false);
     // In a real app, this would redirect to the dashboard
-  }
+    router.push("/patient");
+  };
 
   return (
     <Card className="border-2 shadow-xl">
@@ -105,7 +115,12 @@ export function LoginForm() {
                 </a>
               </div>
 
-              <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -136,10 +151,17 @@ export function LoginForm() {
                       required
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">We'll send a one-time password to your email</p>
+                  <p className="text-xs text-muted-foreground">
+                    We'll send a one-time password to your email
+                  </p>
                 </div>
 
-                <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  disabled={isLoading}
+                >
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -156,7 +178,13 @@ export function LoginForm() {
                   <Label htmlFor="email-display">Email Address</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input id="email-display" type="email" value={email} className="pl-10" disabled />
+                    <Input
+                      id="email-display"
+                      type="email"
+                      value={email}
+                      className="pl-10"
+                      disabled
+                    />
                   </div>
                 </div>
 
@@ -175,7 +203,9 @@ export function LoginForm() {
                       required
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">Check your email for the OTP code</p>
+                  <p className="text-xs text-muted-foreground">
+                    Check your email for the OTP code
+                  </p>
                 </div>
 
                 <div className="flex gap-2">
@@ -184,8 +214,8 @@ export function LoginForm() {
                     variant="outline"
                     className="flex-1 bg-transparent"
                     onClick={() => {
-                      setOtpSent(false)
-                      setOtp("")
+                      setOtpSent(false);
+                      setOtp("");
                     }}
                   >
                     Change Email
@@ -226,5 +256,5 @@ export function LoginForm() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
