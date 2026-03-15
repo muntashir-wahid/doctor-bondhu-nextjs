@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Stethoscope, LogOut, User } from "lucide-react";
 import {
   Sidebar,
@@ -18,21 +18,30 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import DASHBOARD_ITEMS, { type DashboardItem } from "./dashboard-items";
+import { IMe } from "@/lib/interfaces/me.interface";
 
 type SystemRoles = "SUPER_ADMIN";
 type ClinicRoles = "OWNER" | "ADMIN" | "DOCTOR" | "RECEPTIONIST";
 type UserRoles = "PATIENT";
 
-type DashboardSidebarProps =
-  | { organization: "SYSTEM"; role: SystemRoles }
-  | { organization: "CLINIC"; role: ClinicRoles }
-  | { organization: "USER"; role: UserRoles };
+// type DashboardSidebarProps =
+//   | { organization: "SYSTEM"; role: SystemRoles }
+//   | { organization: "CLINIC"; role: ClinicRoles }
+//   | { organization: "USER"; role: UserRoles };
+
+interface IDashboardSidebarProps {
+  organization: "SYSTEM" | "CLINIC" | "USER";
+  role: SystemRoles | ClinicRoles | UserRoles;
+  me: IMe;
+}
 
 export function DashboardSidebar({
   role,
   organization,
-}: DashboardSidebarProps) {
+  me,
+}: IDashboardSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const getDashboardItems = (): DashboardItem[] => {
     const orgItems = DASHBOARD_ITEMS[organization];
@@ -99,16 +108,19 @@ export function DashboardSidebar({
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight min-w-0 group-data-[collapsible=icon]:hidden">
-                <span className="truncate font-semibold">Dr. Admin</span>
+                <span className="truncate font-semibold">
+                  {me.firstName} {me.lastName}
+                </span>
                 <span className="truncate text-xs text-muted-foreground">
-                  admin@doctorbondhu.com
+                  {me.email}
                 </span>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 shrink-0 cursor-pointer"
-                title="Sign Out"
+                title="Log Out"
+                onClick={() => router.push("/logout")}
               >
                 <LogOut className="h-4 w-4" />
               </Button>
