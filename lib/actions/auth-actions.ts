@@ -1,9 +1,19 @@
 "use server";
 
 import apiClient from "../http/api-client";
-// import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
-import { clearUserSession, setUserSession } from "../user-session";
+interface ILoggedInUser {
+  sub: string;
+  email: string;
+  isSuperAdmin: boolean;
+}
+
+import {
+  clearUserSession,
+  getUserSession,
+  setUserSession,
+} from "../user-session";
 
 export async function superAdminLogin(email: string, password: string) {
   let data = null;
@@ -32,13 +42,13 @@ export async function userLogout() {
   await clearUserSession();
 }
 
-// export async function fetchMe() {
-//   const userSession = await getUserSession();
-//   if (!userSession) {
-//     return null;
-//   }
+export async function fetchMe() {
+  const userSession = await getUserSession();
+  if (!userSession) {
+    return null;
+  }
 
-//   const me = jwt.decode(userSession);
+  const me = jwt.decode(userSession) as ILoggedInUser | null;
 
-//   return me;
-// }
+  return me;
+}
