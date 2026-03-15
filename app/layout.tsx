@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "DoctorBondhu - Modern Clinic Management System",
@@ -22,7 +23,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
-        <Analytics />
+        {/* <Analytics /> */}
+        <Toaster position="top-center" richColors closeButton />
       </body>
     </html>
   );
