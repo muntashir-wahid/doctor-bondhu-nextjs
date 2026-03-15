@@ -13,5 +13,5 @@ export interface IMe {
   isSuperAdmin: boolean;
   clinicUid?: string;
   clinicUserUid?: string;
-  role: ClinicUserRole;
+  role?: ClinicUserRole;
 }
