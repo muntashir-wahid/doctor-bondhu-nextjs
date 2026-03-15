@@ -13,25 +13,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { IMe } from "@/lib/interfaces/me.interface";
 
-interface ProfileDropdownProps {
-  user?: {
-    name: string;
-    email: string;
-    avatar?: string;
-  };
-}
+export function ProfileDropdown({ user }: { user: IMe }) {
+  
 
-export function ProfileDropdown({ user }: ProfileDropdownProps) {
-  const defaultUser = {
-    name: user?.name || "Dr. Admin",
-    email: user?.email || "admin@doctorbondhu.com",
-    avatar: user?.avatar || "/avatars/user.jpg",
-  };
+  const router = useRouter();
 
   const handleLogout = () => {
-    // TODO: Implement logout logic
-    console.log("Logout clicked");
+    router.push("/logout");
   };
 
   return (
@@ -43,7 +34,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           aria-label="Open profile menu"
         >
           <Avatar className="h-10 w-10">
-            <AvatarImage src={defaultUser.avatar} alt={defaultUser.name} />
+            {/* <AvatarImage src={user.avatar || "/avatars/user.jpg"} alt={user.name} /> */}
             <AvatarFallback className="bg-primary text-primary-foreground">
               <User className="h-5 w-5" />
             </AvatarFallback>
@@ -54,10 +45,10 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {defaultUser.name}
+              {user.firstName} {user.lastName}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {defaultUser.email}
+              {user.email}
             </p>
           </div>
         </DropdownMenuLabel>

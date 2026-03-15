@@ -6,9 +6,8 @@ import { fetchMe } from "./lib/actions/auth-actions";
 export async function middleware(request: NextRequest) {
   const PATHNAME = request.nextUrl.pathname;
 
-  const me = await fetchMe();
-
   const token = await getUserSession();
+  const me = await fetchMe();
 
   if (!token) {
     if (PATHNAME.startsWith("/adminum") && !me?.isSuperAdmin) {

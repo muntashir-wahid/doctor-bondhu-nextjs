@@ -11,7 +11,8 @@ interface ILoggedInUser {
 
 import {
   clearUserSession,
-  getUserSession,
+  getMe,
+  setMe,
   setUserSession,
 } from "../user-session";
 
@@ -28,6 +29,7 @@ export async function superAdminLogin(email: string, password: string) {
 
     if (loginResponse.data.accessToken) {
       setUserSession(loginResponse.data.accessToken);
+      setMe(loginResponse.data.user);
     }
   } catch (err: any) {
     error = {
@@ -43,12 +45,10 @@ export async function userLogout() {
 }
 
 export async function fetchMe() {
-  const userSession = await getUserSession();
-  if (!userSession) {
-    return null;
-  }
-
-  const me = jwt.decode(userSession) as ILoggedInUser | null;
-
+  const me = await getMe();
   return me;
+}
+
+export async function logout() {
+  await clearUserSession();
 }
