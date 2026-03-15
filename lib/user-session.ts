@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import { USER_SESSION_COOKIE_NAME } from "./http/constants";
-// import jwt from "jsonwebtoken";
 
 export async function setUserSession(token: string) {
   const cookieStore = await cookies();
@@ -28,4 +27,10 @@ export async function clearUserSession() {
   cookieStore.delete(USER_SESSION_COOKIE_NAME);
 }
 
-export async function getMe() {}
+export async function getMe() {
+  const token = await getUserSession();
+
+  if (!token) {
+    return null;
+  }
+}
