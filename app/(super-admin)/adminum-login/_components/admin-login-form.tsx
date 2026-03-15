@@ -8,7 +8,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, Loader2, AlertCircle } from "lucide-react";
+import { Mail, Lock, Loader2 } from "lucide-react";
+import { superAdminLogin } from "@/lib/actions/auth-actions";
+import { toast } from "sonner";
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -16,7 +18,7 @@ const validationSchema = Yup.object({
     .email("Please enter a valid email address")
     .required("Email is required"),
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
 });
 
@@ -32,24 +34,22 @@ interface LoginFormValues {
 }
 
 const AdminLoginForm = () => {
-  const [apiError, setApiError] = useState<string>("");
   const router = useRouter();
-
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: async (values: LoginFormValues) => {
-      setApiError("");
-      try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        console.log("[v0] Super admin login attempted:", values);
-        // In a real app, you would handle authentication here and redirect on success
-        router.push("/adminum");
-      } catch (error) {
-        setApiError(
-          "Login failed. Please check your credentials and try again.",
-        );
+    onSubmit: async (values: LoginFormValues, { resetForm }) => {
+      const result = await superAdminLogin(values.email, values.password);
+      console.log("Login result:", result);
+
+      if (result.data) {
+        resetForm();
+        toast.success("Login successful! Redirecting...");
+        router.refresh();
+      }
+
+      if (result.error) {
+        toast.error(result.error.message || "Login failed. Please try again.");
       }
     },
   });
@@ -58,14 +58,6 @@ const AdminLoginForm = () => {
     <Card className="border-2 shadow-xl">
       <CardContent>
         <form onSubmit={formik.handleSubmit} className="space-y-4">
-          {/* API Error Display */}
-          {apiError && (
-            <div className="flex items-center gap-2 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-              <AlertCircle className="h-4 w-4" />
-              {apiError}
-            </div>
-          )}
-
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
             <div className="relative">
@@ -116,11 +108,11 @@ const AdminLoginForm = () => {
             )}
           </div>
 
-          <div className="flex items-center justify-end text-sm">
+          {/* <div className="flex items-center justify-end text-sm">
             <a href="#" className="text-primary hover:underline">
               Forgot password?
             </a>
-          </div>
+          </div> */}
 
           <Button
             type="submit"
