@@ -1,27 +1,20 @@
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/shared/layout/dashboard-sidebar";
 import { TopBar } from "@/components/shared/layout/top-bar";
-import { ClinicUserRole } from "@/lib/interfaces/me.interface";
+import { fetchMe } from "@/lib/actions/auth-actions";
 
-const ClinicLayout = ({
+const ClinicLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const me = {
-    uid: "123456",
-    email: "admin@doctorbondhu.com",
-    firstName: "Dr.",
-    lastName: "Admin",
-    isSuperAdmin: false,
-    clinicUid: "clinic123",
-    clinicUserUid: "user123",
-    role: "OWNER" as ClinicUserRole,
-  };
+  const me = await fetchMe();
+
+  console.log("ClinicLayout - me:", me);
 
   return (
     <SidebarProvider>
-      <DashboardSidebar organization="CLINIC" role="OWNER" me={me} />
+      <DashboardSidebar organization="CLINIC" role={me?.role} me={me} />
       <SidebarInset>
         <TopBar role="CLINIC_ADMIN" me={me} />
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
