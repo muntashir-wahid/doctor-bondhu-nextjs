@@ -1,8 +1,8 @@
 "use client";
 
-import type React from "react";
-
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   Card,
   CardContent,
@@ -21,27 +21,54 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Mail, Lock, Loader2, UserCog } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { clinicUserLogin } from "@/lib/actions/auth-actions";
+import { toast } from "sonner";
 
-type Role = "OWNER" | "ADMIN" | "DOCTOR";
+export type Role = "OWNER" | "ADMIN" | "DOCTOR";
 
-export function ClinicMemberLoginForm() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState<Role | "">("");
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Please enter a valid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+  role: Yup.string()
+    .oneOf(["OWNER", "ADMIN", "DOCTOR"], "Please select a valid role")
+    .required("Role is required"),
+});
+
+const initialValues = {
+  email: "",
+  password: "",
+  role: "" as Role | "",
+};
+
+export function ClinicMemberLoginForm({ clinicUid }: { clinicUid: string }) {
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("[v0] Member login attempted:", { email, password, role });
-    setIsLoading(false);
-    // In a real app, this would redirect to the appropriate dashboard based on role
-    router.push("/clinic");
-  };
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      const result = await clinicUserLogin(
+        values.email,
+        values.password,
+        values.role as Role,
+        clinicUid,
+      );
+
+      if (result.data) {
+        resetForm();
+        toast.success("Login successful! Redirecting...");
+        router.refresh();
+      }
+
+      if (result.error) {
+        toast.error(result.error.message || "Login failed. Please try again.");
+      }
+    },
+  });
 
   return (
     <Card className="border-2 shadow-xl">
@@ -52,21 +79,29 @@ export function ClinicMemberLoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="member@clinic.com"
-                className="pl-10"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={`pl-10 ${
+                  formik.errors.email && formik.touched.email
+                    ? "border-destructive"
+                    : ""
+                }`}
               />
             </div>
+            {formik.errors.email && formik.touched.email && (
+              <p className="text-sm text-destructive">{formik.errors.email}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -75,14 +110,24 @@ export function ClinicMemberLoginForm() {
               <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="Enter your password"
-                className="pl-10"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={`pl-10 ${
+                  formik.errors.password && formik.touched.password
+                    ? "border-destructive"
+                    : ""
+                }`}
               />
             </div>
+            {formik.errors.password && formik.touched.password && (
+              <p className="text-sm text-destructive">
+                {formik.errors.password}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -90,11 +135,20 @@ export function ClinicMemberLoginForm() {
             <div className="relative">
               <UserCog className="absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Select
-                value={role}
-                onValueChange={(value) => setRole(value as Role)}
-                required
+                value={formik.values.role}
+                onValueChange={(value) =>
+                  formik.setFieldValue("role", value as Role)
+                }
               >
-                <SelectTrigger id="role" className="pl-10">
+                <SelectTrigger
+                  id="role"
+                  className={`pl-10 ${
+                    formik.errors.role && formik.touched.role
+                      ? "border-destructive"
+                      : ""
+                  }`}
+                  onBlur={() => formik.setFieldTouched("role", true)}
+                >
                   <SelectValue placeholder="Select your role" />
                 </SelectTrigger>
                 <SelectContent>
@@ -104,25 +158,18 @@ export function ClinicMemberLoginForm() {
                 </SelectContent>
               </Select>
             </div>
-          </div>
-
-          <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center gap-2">
-              <input type="checkbox" className="rounded border-input" />
-              <span className="text-muted-foreground">Remember me</span>
-            </label>
-            <a href="#" className="text-primary hover:underline">
-              Forgot password?
-            </a>
+            {formik.errors.role && formik.touched.role && (
+              <p className="text-sm text-destructive">{formik.errors.role}</p>
+            )}
           </div>
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full cursor-pointer"
             size="lg"
-            disabled={isLoading}
+            disabled={formik.isSubmitting}
           >
-            {isLoading ? (
+            {formik.isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Signing in...
