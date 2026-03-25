@@ -104,3 +104,18 @@ export async function getClinicDetails(id: string) {
   }
   return { data, error };
 }
+
+export async function toggleClinicStatus(id: string) {
+  let data = null;
+  let error = null;
+
+  try {
+    const response = await apiClient.patch(`clinics/${id}/status`);
+    data = response;
+    revalidateTag(CLINICS_CACHE_KEYS.ALL);
+    revalidateTag(CLINICS_CACHE_KEYS.details(id));
+  } catch (err: any) {
+    error = processErrorResponse(err);
+  }
+  return { data, error };
+}
