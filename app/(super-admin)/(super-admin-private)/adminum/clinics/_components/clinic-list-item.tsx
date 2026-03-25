@@ -9,6 +9,7 @@ import {
   Eye,
   Edit,
   Trash2,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,12 +22,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { type ClinicItem, STATUS_STYLES } from "./types";
+import { cn } from "@/lib/utils";
 
 interface ClinicListItemProps {
   clinic: ClinicItem;
 }
 
 const ClinicListItem = ({ clinic }: ClinicListItemProps) => {
+  const handleClinicStatusToggle = () => {
+    // Implement status toggle logic here (e.g., API call to update clinic status)
+    console.log(
+      `Toggling status for clinic ${clinic.uid}. Current status: ${clinic.status}`,
+    );
+  };
+
   return (
     <div className="flex items-start gap-4 p-6 transition-colors hover:bg-muted/50">
       <Avatar className="h-14 w-14 rounded-xl shrink-0">
@@ -86,9 +95,24 @@ const ClinicListItem = ({ clinic }: ClinicListItemProps) => {
                   Edit Clinic
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive focus:text-destructive">
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete Clinic
+              <DropdownMenuItem
+                className={cn(
+                  clinic.status === "ACTIVE"
+                    ? "text-destructive"
+                    : "text-green-500",
+                )}
+              >
+                {clinic.status === "ACTIVE" ? (
+                  <>
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete Clinic
+                  </>
+                ) : (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
+                    Active Clinic
+                  </>
+                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
