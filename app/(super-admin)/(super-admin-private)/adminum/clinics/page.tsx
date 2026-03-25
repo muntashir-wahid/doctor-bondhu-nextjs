@@ -3,13 +3,13 @@ import {
   Plus,
   MapPin,
   Phone,
-  Star,
-  Users,
   Building2,
   MoreVertical,
   Eye,
   Edit,
   Trash2,
+  Mail,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,14 +22,48 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mockClinics } from "@/lib/mock-data";
 import Link from "next/link";
+import { getAllClinics } from "@/lib/actions/clinics-actions";
 
-const AdminClinicsPage = () => {
+interface ClinicItem {
+  uid: string;
+  name: string;
+  slug: string;
+  address: string;
+  contact: string;
+  email: string;
+  type: string;
+  clinicBanner: string;
+  website: string;
+  status: "ACTIVE" | "PENDING" | "INACTIVE";
+  createdAt: string;
+  updatedAt: string;
+}
+
+const STATUS_STYLES: Record<ClinicItem["status"], string> = {
+  ACTIVE: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
+  PENDING: "bg-amber-500/10 text-amber-600 border-amber-200",
+  INACTIVE: "bg-muted text-muted-foreground border-border",
+};
+
+const AdminClinicsPage = async () => {
+  const { data, error } = await getAllClinics();
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-destructive">
+          Failed to load clinics: {error.message}
+        </p>
+      </div>
+    );
+  }
+
+  const clinics: ClinicItem[] = data?.data || [];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5">
       <div className="container mx-auto p-6">
-        {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -52,168 +86,142 @@ const AdminClinicsPage = () => {
           </div>
         </div>
 
-        {/* Search and Stats Section */}
-        <div className="mb-6 grid gap-6 md:grid-cols-4">
-          {/* Search Bar */}
-          <div className="md:col-span-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search clinics by name, specialty, or location..."
-                className="pl-9"
-              />
-            </div>
+        <div className="mb-6">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search clinics by name, type, or location..."
+              className="pl-9"
+            />
           </div>
-
-          {/* Quick Stats */}
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="rounded-lg bg-primary/10 p-2">
-                  <Building2 className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{mockClinics.length}</p>
-                  <p className="text-sm text-muted-foreground">Total Clinics</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="rounded-lg bg-secondary/10 p-2">
-                  <Users className="h-5 w-5 text-secondary" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">
-                    {mockClinics.reduce(
-                      (total, clinic) => total + clinic.doctors.length,
-                      0,
-                    )}
-                  </p>
-                  <p className="text-sm text-muted-foreground">Total Doctors</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
-        {/* Clinics List */}
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>All Clinics</span>
               <Badge variant="secondary" className="px-3 py-1">
-                {mockClinics.length} clinics
+                {clinics.length} clinics
               </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="space-y-0">
-              {mockClinics.map((clinic, index) => (
-                <div
-                  key={clinic.id}
-                  className={`flex items-center gap-4 p-6 transition-colors hover:bg-muted/50 ${
-                    index !== mockClinics.length - 1 ? "border-b" : ""
-                  }`}
-                >
-                  {/* Clinic Avatar/Image */}
-                  <Avatar className="h-16 w-16 rounded-xl">
-                    <AvatarImage src={clinic.image} alt={clinic.name} />
-                    <AvatarFallback className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 text-lg font-semibold">
-                      {clinic.name
-                        .split(" ")
-                        .map((word) => word[0])
-                        .join("")
-                        .slice(0, 2)}
-                    </AvatarFallback>
-                  </Avatar>
+            {clinics.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-muted-foreground gap-3">
+                <Building2 className="h-10 w-10 opacity-30" />
+                <p className="text-sm">No clinics found</p>
+              </div>
+            ) : (
+              <div className="space-y-0">
+                {clinics.map((clinic, index) => (
+                  <div
+                    key={clinic.uid}
+                    className={`flex items-start gap-4 p-6 transition-colors hover:bg-muted/50 ${
+                      index !== clinics.length - 1 ? "border-b" : ""
+                    }`}
+                  >
+                    <Avatar className="h-14 w-14 rounded-xl shrink-0">
+                      <AvatarImage
+                        src={clinic.clinicBanner}
+                        alt={clinic.name}
+                      />
+                      <AvatarFallback className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 text-base font-semibold">
+                        {clinic.name
+                          .split(" ")
+                          .map((w) => w[0])
+                          .join("")
+                          .slice(0, 2)
+                          .toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
 
-                  {/* Clinic Info */}
-                  <div className="flex-1 space-y-2">
-                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <h3 className="text-lg font-semibold text-foreground">
-                          {clinic.name}
-                        </h3>
-                        <Badge className="w-fit bg-primary/10 text-primary hover:bg-primary/20">
-                          {clinic.specialty}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        {/* Rating */}
-                        <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                          <span className="font-medium">{clinic.rating}</span>
-                          <span className="text-sm text-muted-foreground">
-                            ({clinic.reviewCount})
-                          </span>
+                    <div className="flex-1 min-w-0 space-y-2">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="text-base font-semibold text-foreground leading-tight">
+                              {clinic.name}
+                            </h3>
+                            <Badge
+                              variant="outline"
+                              className={`text-xs font-medium ${STATUS_STYLES[clinic.status]}`}
+                            >
+                              {clinic.status}
+                            </Badge>
+                          </div>
+                          <Badge
+                            className="w-fit bg-primary/10 text-primary hover:bg-primary/20 text-xs"
+                            variant="secondary"
+                          >
+                            {clinic.type}
+                          </Badge>
                         </div>
-                        {/* Actions */}
+
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-8 w-8 p-0"
+                              className="h-8 w-8 p-0 shrink-0"
                             >
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Details
+                            <DropdownMenuItem asChild>
+                              <Link href={`/adminum/clinics/${clinic.uid}`}>
+                                <Eye className="mr-2 h-4 w-4" />
+                                View Details
+                              </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Clinic
+                            <DropdownMenuItem asChild>
+                              <Link
+                                href={`/adminum/clinics/${clinic.uid}/edit`}
+                              >
+                                <Edit className="mr-2 h-4 w-4" />
+                                Edit Clinic
+                              </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
+                            <DropdownMenuItem className="text-destructive focus:text-destructive">
                               <Trash2 className="mr-2 h-4 w-4" />
                               Delete Clinic
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
-                    </div>
 
-                    {/* Clinic Details */}
-                    <div className="grid gap-4 text-sm text-muted-foreground md:grid-cols-3">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-primary" />
-                        <span>{clinic.location}</span>
+                      <div className="grid gap-2 text-sm text-muted-foreground sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />
+                          <span className="truncate">{clinic.address}</span>
+                        </div>
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Phone className="h-3.5 w-3.5 text-secondary shrink-0" />
+                          <span className="truncate">{clinic.contact}</span>
+                        </div>
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Mail className="h-3.5 w-3.5 text-accent shrink-0" />
+                          <span className="truncate">{clinic.email}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Phone className="h-4 w-4 text-secondary" />
-                        <span>{clinic.phone}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4 text-accent" />
-                        <span>{clinic.doctors.length} doctors</span>
-                      </div>
-                    </div>
 
-                    {/* Services Preview */}
-                    <div className="flex flex-wrap gap-1">
-                      {clinic.services.slice(0, 3).map((service, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          {service}
-                        </Badge>
-                      ))}
-                      {clinic.services.length > 3 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{clinic.services.length - 3} more
-                        </Badge>
+                      {clinic.website && (
+                        <a
+                          href={clinic.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          <Globe className="h-3 w-3" />
+                          {clinic.website}
+                        </a>
                       )}
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
