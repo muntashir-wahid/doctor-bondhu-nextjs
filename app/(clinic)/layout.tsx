@@ -10,8 +10,6 @@ const ClinicLayout = async ({
 }>) => {
   const me = await fetchMe();
 
-  console.log("ClinicLayout - me:", me);
-
   return (
     <SidebarProvider>
       <DashboardSidebar organization="CLINIC" role={me?.role} me={me} />

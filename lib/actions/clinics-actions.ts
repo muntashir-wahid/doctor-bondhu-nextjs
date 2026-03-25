@@ -3,6 +3,7 @@
 import { revalidateTag } from "next/cache";
 import apiClient from "../http/api-client";
 import { processErrorResponse } from "../http/process-error-response";
+import { getMe } from "../user-session";
 
 /*
 ////// TYPE DEFINITIONS //////
@@ -88,14 +89,29 @@ export async function createClinic(payload: ICreateClinicPayload) {
   return { data, error };
 }
 
-export async function getClinicDetails(id: string) {
+export async function getClinicDetails(id?: string) {
   let data = null;
   let error = null;
 
+  const me = await getMe();
+  const clinicUid = me?.clinicUid;
+  let uid;
+
+  if (id) {
+    uid = id;
+  } else {
+    if (!clinicUid) {
+      // If the requested clinic ID doesn't match the user's clinic, we can return an error or null data
+      error = new Error("Unauthorized access to clinic details");
+      return { data, error };
+    }
+    uid = clinicUid;
+  }
+
   try {
-    const clientResponse = await apiClient.get(`clinics/${id}`, {
+    const clientResponse = await apiClient.get(`clinics/${uid}`, {
       cache: "force-cache",
-      next: { tags: [CLINICS_CACHE_KEYS.details(id)] },
+      next: { tags: [CLINICS_CACHE_KEYS.details(uid)] },
     });
 
     data = clientResponse;

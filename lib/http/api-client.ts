@@ -1,4 +1,4 @@
-import { getUserSession } from "../user-session";
+import { getMe, getUserSession } from "../user-session";
 
 type RequestConfig = RequestInit & {
   baseURL?: string;
@@ -204,11 +204,20 @@ const apiClient = new ApiClient({
 // Example: Add auth token to all requests
 apiClient.addRequestInterceptor(async (config) => {
   const token = await getUserSession();
+  const me = await getMe();
+  const clinicUid = me?.clinic?.uid;
 
   if (token) {
     config.headers = {
       ...config.headers,
       Authorization: `Bearer ${token}`,
+    };
+  }
+
+  if (clinicUid) {
+    config.headers = {
+      ...config.headers,
+      "x-clinic-uid": clinicUid,
     };
   }
 
