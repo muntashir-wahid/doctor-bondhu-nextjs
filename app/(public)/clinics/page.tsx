@@ -1,9 +1,26 @@
-import { ClinicCard } from "@/components/shared/cards/clinic-card";
-import { mockClinics } from "@/lib/mock-data";
+import { ClinicCard, IClinic } from "@/components/shared/cards/clinic-card";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { getAllClinics } from "@/lib/actions/clinics-actions";
 
-export default function ClinicsPage() {
+export default async function ClinicsPage() {
+  const result = await getAllClinics();
+
+  console.log("Clinics data:", result.data);
+  console.log("Clinics error:", result.error);
+
+  if (result.error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-500 text-lg">
+          Failed to load clinics. Please try again later.
+        </p>
+      </div>
+    );
+  }
+
+  const clinics = result.data?.data || [];
+
   return (
     <div className="min-h-screen">
       <main>
@@ -35,15 +52,15 @@ export default function ClinicsPage() {
               <p className="text-muted-foreground">
                 Showing{" "}
                 <span className="font-semibold text-foreground">
-                  {mockClinics.length}
+                  {clinics.length}
                 </span>{" "}
                 clinics
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {mockClinics.map((clinic) => (
-                <ClinicCard key={clinic.id} clinic={clinic} />
+              {clinics.map((clinic: IClinic) => (
+                <ClinicCard key={clinic.uid} clinic={clinic} />
               ))}
             </div>
           </div>

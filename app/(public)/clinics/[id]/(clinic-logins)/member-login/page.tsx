@@ -6,7 +6,6 @@ const ClinicMemberLoginPage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  console.log("Clinic ID:", id);
 
   return (
     <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 py-12">
@@ -20,7 +19,7 @@ const ClinicMemberLoginPage = async ({
               Access your clinic management dashboard as a staff member
             </p>
           </div>
-          <ClinicMemberLoginForm />
+          <ClinicMemberLoginForm clinicUid={id} />
         </div>
       </div>
     </main>

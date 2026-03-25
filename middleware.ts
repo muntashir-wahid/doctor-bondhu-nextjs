@@ -26,6 +26,18 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (token && PATHNAME.endsWith("member-login")) {
+    return NextResponse.redirect(new URL("/clinic", request.url));
+  }
+
+  // Matches /clinic and /clinic/... but NOT /clinics or /clinics/...
+  if (PATHNAME === "/clinic" || PATHNAME.startsWith("/clinic/")) {
+    if (!token || !me?.clinicUid) {
+      clearUserSession();
+      return NextResponse.redirect(new URL("/clinics", request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
@@ -34,7 +46,7 @@ export const config = {
     "/",
     "/clinics/:path*",
     "/adminum-login",
-    "/clinics/:path*",
+    "/clinic/:path*",
     "/patient/:path*",
     "/adminum/:path*",
   ],
