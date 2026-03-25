@@ -23,17 +23,23 @@ import {
 import Link from "next/link";
 import { type ClinicItem, STATUS_STYLES } from "./types";
 import { cn } from "@/lib/utils";
+import { toggleClinicStatus } from "@/lib/actions/clinics-actions";
+import { toast } from "sonner";
 
 interface ClinicListItemProps {
   clinic: ClinicItem;
 }
 
 const ClinicListItem = ({ clinic }: ClinicListItemProps) => {
-  const handleClinicStatusToggle = () => {
-    // Implement status toggle logic here (e.g., API call to update clinic status)
-    console.log(
-      `Toggling status for clinic ${clinic.uid}. Current status: ${clinic.status}`,
-    );
+  const handleClinicStatusToggle = async () => {
+    const { data, error } = await toggleClinicStatus(clinic.uid);
+    if (error) {
+      console.error("Failed to toggle clinic status:", error);
+      toast.error("Failed to toggle clinic status: " + error.message);
+      return;
+    }
+
+    toast.success(`Clinic is now ${data?.data.status.toLowerCase()}`);
   };
 
   return (
@@ -101,16 +107,17 @@ const ClinicListItem = ({ clinic }: ClinicListItemProps) => {
                     ? "text-destructive"
                     : "text-green-500",
                 )}
+                onClick={handleClinicStatusToggle}
               >
                 {clinic.status === "ACTIVE" ? (
                   <>
                     <Trash2 className="mr-2 h-4 w-4" />
-                    Delete Clinic
+                    Deactivate Clinic
                   </>
                 ) : (
                   <>
                     <Check className="mr-2 h-4 w-4" />
-                    Active Clinic
+                    Activate Clinic
                   </>
                 )}
               </DropdownMenuItem>
